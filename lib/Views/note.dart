@@ -18,7 +18,7 @@ class Note extends StatelessWidget {
       }else
         {
           return "Edit Note"
-        }              equivilant Short Steatment => _noteMode==NoteMode.Adding?"Add Note":"Edit Note"
+        }             equivalent Short Statement => _noteMode==NoteMode.Adding?"Add Note":"Edit Note"
       */
       appBar: AppBar(
         title: Text(_noteMode == NoteMode.Adding ? "Add Note" : "Edit Note"),
