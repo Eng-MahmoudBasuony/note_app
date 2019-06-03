@@ -1,16 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+enum NoteMode
+{
+  Editing,
+  Adding
+}
+
+
+
+
 class Note extends StatelessWidget {
+
+  final NoteMode _noteMode;
+
+  Note(this._noteMode);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+/*
+      if(_noteMode==NoteMode.Adding)
+      {
+        return "Add Note";
+      }else
+        {
+          return "Edit Note"
+        }              equivilant Short Steatment => _noteMode==NoteMode.Adding?"Add Note":"Edit Note"
+      */
       appBar: AppBar(
-        title: Text('Add Note'),
+        title: Text(_noteMode==NoteMode.Adding?"Add Note":"Edit Note"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
               decoration: InputDecoration(hintText: 'Note Title'),
@@ -21,12 +46,25 @@ class Note extends StatelessWidget {
             TextField(
               decoration: InputDecoration(hintText: "Note Text"),
             ),
+            Container(
+              height: 18.0,
+            ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _NoteButton("Save", Colors.blue, () {}),
-                  _NoteButton("Discard", Colors.grey, () {}),
-                  _NoteButton("Delete", Colors.red, () {})
+                  _NoteButton("Save", Colors.blue, () {
+                    Navigator.pop(context);
+                  }),
+                  Container(height: 16.0,),
+                  _NoteButton("Discard", Colors.grey, ()
+                  {
+                    Navigator.pop(context);
+                  }),
+                  Container(height: 16.0,),
+                  _NoteButton("Delete", Colors.red, ()
+                  {
+                    Navigator.pop(context);
+                  })
                 ])
           ],
         ),
@@ -51,6 +89,8 @@ class _NoteButton extends StatelessWidget {
         style: TextStyle(color: Colors.white),
       ),
       color: _color,
+      minWidth: 100,
+      height: 45,
     );
   }
 }

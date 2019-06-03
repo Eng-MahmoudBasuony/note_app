@@ -13,7 +13,7 @@ class NoteList extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Note()));
+                context, MaterialPageRoute(builder: (context) => Note(NoteMode.Editing)));
           },
           child: Padding(
             padding: const EdgeInsets.only(
@@ -34,7 +34,7 @@ class NoteList extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Note()));
+              context, MaterialPageRoute(builder: (context) => Note(NoteMode.Adding)));
         },
         child: Icon(Icons.add),
       ),
