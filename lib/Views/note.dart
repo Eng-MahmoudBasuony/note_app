@@ -22,14 +22,12 @@ class Note extends StatelessWidget {
               decoration: InputDecoration(hintText: "Note Text"),
             ),
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly
-                ,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   _NoteButton("Save", Colors.blue, () {}),
                   _NoteButton("Discard", Colors.grey, () {}),
                   _NoteButton("Delete", Colors.red, () {})
-                ]
-            )
+                ])
           ],
         ),
       ),
@@ -37,20 +35,22 @@ class Note extends StatelessWidget {
   }
 }
 
-
 class _NoteButton extends StatelessWidget {
   final String _text;
   final Color _color;
   final Function _onPressed;
 
-  _NoteButton(this._text, this._color, this._onPressed)
-
+  _NoteButton(this._text, this._color, this._onPressed);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(onPressed: _onPressed,
-      child: Text(_text, style: TextStyle(color: Colors.white),),
-      color: _color,);
+    return MaterialButton(
+      onPressed: _onPressed,
+      child: Text(
+        _text,
+        style: TextStyle(color: Colors.white),
+      ),
+      color: _color,
+    );
   }
 }
-
