@@ -8,7 +8,8 @@ void main()
 
 class App extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return MaterialApp(
       title: 'Notes',
       home: NoteList(),
