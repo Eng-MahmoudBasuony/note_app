@@ -1,18 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-enum NoteMode
-{
-  Editing,
-  Adding
-}
-
-
-
+enum NoteMode { Editing, Adding }
 
 class Note extends StatelessWidget {
-
   final NoteMode _noteMode;
 
   Note(this._noteMode);
@@ -30,7 +21,7 @@ class Note extends StatelessWidget {
         }              equivilant Short Steatment => _noteMode==NoteMode.Adding?"Add Note":"Edit Note"
       */
       appBar: AppBar(
-        title: Text(_noteMode==NoteMode.Adding?"Add Note":"Edit Note"),
+        title: Text(_noteMode == NoteMode.Adding ? "Add Note" : "Edit Note"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -55,16 +46,22 @@ class Note extends StatelessWidget {
                   _NoteButton("Save", Colors.blue, () {
                     Navigator.pop(context);
                   }),
-                  Container(height: 16.0,),
-                  _NoteButton("Discard", Colors.grey, ()
-                  {
+                  Container(
+                    height: 16.0,
+                  ),
+                  _NoteButton("Discard", Colors.grey, () {
                     Navigator.pop(context);
                   }),
-                  Container(height: 16.0,),
-                  _NoteButton("Delete", Colors.red, ()
-                  {
-                    Navigator.pop(context);
-                  })
+                  Container(
+                    height: 16.0,
+                  ),
+                  _noteMode == NoteMode.Editing //Check Editing Or Not
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: _NoteButton("Delete", Colors.red, () {
+                            Navigator.pop(context);
+                          }))
+                      : Container(),
                 ])
           ],
         ),
