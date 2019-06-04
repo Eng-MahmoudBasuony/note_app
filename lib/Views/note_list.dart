@@ -29,20 +29,22 @@ class NoteListState extends State<NoteList> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Note(NoteMode.Editing)));
+                      builder: (context) => Note(NoteMode.Editing,index)));
             },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 30.0, bottom: 30.0, left: 13.0, right: 22.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _NoteTitle(_notes[index]['titel']),
-                  Container(
-                    height: 4,
-                  ),
-                  _NoteText(_notes[index]['text']),
-                ],
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 30.0, bottom: 30.0, left: 13.0, right: 22.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _NoteTitle(_notes[index]['titel']),
+                    Container(
+                      height: 4,
+                    ),
+                    _NoteText(_notes[index]['text']),
+                  ],
+                ),
               ),
             ),
           );
@@ -51,8 +53,9 @@ class NoteListState extends State<NoteList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Note(NoteMode.Adding)));
+              MaterialPageRoute(builder: (context) => Note(NoteMode.Adding,0)));
         },
         child: Icon(Icons.add),
       ),

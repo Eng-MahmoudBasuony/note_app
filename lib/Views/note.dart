@@ -6,8 +6,10 @@ enum NoteMode { Editing, Adding }
 
 class Note extends StatefulWidget {
   final NoteMode noteMode;
+  final int index;
 
-  Note(this.noteMode);
+  Note(this.noteMode, this.index);
+
 
   @override
   NoteState createState() => NoteState();
@@ -19,6 +21,21 @@ class NoteState extends State<Note> {
 
   List<Map<String, String>> get _noteList =>
       NoteInheritedWidgets.of(context).notes;
+
+
+@override
+  void didChangeDependencies() {
+
+
+    if(widget?.noteMode==NoteMode.Editing)
+    {
+      //SET Text TO TextField
+      _titelController.text=_noteList[widget.index]['titel'];
+      _textController.text=_noteList[widget.index]['text'];
+    }
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +77,17 @@ class NoteState extends State<Note> {
                 children: <Widget>[
                   _NoteButton("Save", Colors.blue, () {
                     if (widget?.noteMode == NoteMode.Adding) {
+
                       final titel = _titelController.text;
                       final text = _textController.text;
-
+                       // Add Data to List
                       _noteList.add({'titel': titel, 'text': text});
+                    } else if (widget?.noteMode == NoteMode.Editing)
+                    {
+                      final titel = _titelController.text;
+                      final text = _textController.text;
+                      //Update index for Note
+                      _noteList[widget.index] = {'titel': titel, 'text': text};
                     }
                     Navigator.pop(context);
                   }),
@@ -79,7 +103,9 @@ class NoteState extends State<Note> {
                   widget.noteMode == NoteMode.Editing //Check Editing Or Not
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: _NoteButton("Delete", Colors.red, () {
+                          child: _NoteButton("Delete", Colors.red, ()
+                          {
+                            _noteList.removeAt(widget.index);
                             Navigator.pop(context);
                           }))
                       : Container(),
