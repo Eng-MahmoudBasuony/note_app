@@ -1,12 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:note_app/inherited_widgets/note_inherited_widgets.dart';
 
 enum NoteMode { Editing, Adding }
 
-class Note extends StatelessWidget {
-  final NoteMode _noteMode;
+class Note extends StatefulWidget {
+  final NoteMode noteMode;
 
-  Note(this._noteMode);
+  Note(this.noteMode);
+
+  @override
+  NoteState createState() => NoteState();
+}
+
+class NoteState extends State<Note> {
+  final TextEditingController _titelController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
+
+  List<Map<String, String>> get _noteList =>
+      NoteInheritedWidgets.of(context).notes;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +33,8 @@ class Note extends StatelessWidget {
         }             equivalent Short Statement => _noteMode==NoteMode.Adding?"Add Note":"Edit Note"
       */
       appBar: AppBar(
-        title: Text(_noteMode == NoteMode.Adding ? "Add Note" : "Edit Note"),
+        title:
+            Text(widget.noteMode == NoteMode.Adding ? "Add Note" : "Edit Note"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -29,12 +42,14 @@ class Note extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
+              controller: _titelController,
               decoration: InputDecoration(hintText: 'Note Title'),
             ),
             Container(
               height: 8.0,
             ),
             TextField(
+              controller: _textController,
               decoration: InputDecoration(hintText: "Note Text"),
             ),
             Container(
@@ -44,6 +59,12 @@ class Note extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   _NoteButton("Save", Colors.blue, () {
+                    if (widget?.noteMode == NoteMode.Adding) {
+                      final titel = _titelController.text;
+                      final text = _textController.text;
+
+                      _noteList.add({'titel': titel, 'text': text});
+                    }
                     Navigator.pop(context);
                   }),
                   Container(
@@ -55,7 +76,7 @@ class Note extends StatelessWidget {
                   Container(
                     height: 16.0,
                   ),
-                  _noteMode == NoteMode.Editing //Check Editing Or Not
+                  widget.noteMode == NoteMode.Editing //Check Editing Or Not
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: _NoteButton("Delete", Colors.red, () {
