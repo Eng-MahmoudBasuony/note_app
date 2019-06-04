@@ -1,57 +1,49 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/inherited_widgets/note_inherited_widgets.dart';
+import 'package:note_app/providers/note_providers.dart';
 
-enum NoteMode { Editing, Adding }
+
+enum NoteMode {
+  Editing,
+  Adding
+}
 
 class Note extends StatefulWidget {
+
   final NoteMode noteMode;
-  final int index;
+  final Map<String, dynamic> note;
 
-  Note(this.noteMode, this.index);
-
+  Note(this.noteMode, this.note);
 
   @override
-  NoteState createState() => NoteState();
+  NoteState createState() {
+    return new NoteState();
+  }
 }
 
 class NoteState extends State<Note> {
-  final TextEditingController _titelController = TextEditingController();
+
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _textController = TextEditingController();
 
-  List<Map<String, String>> get _noteList =>
-      NoteInheritedWidgets.of(context).notes;
+  List<Map<String, String>> get _notes => NoteInheritedWidget.of(context).notes;
 
-
-@override
+  @override
   void didChangeDependencies() {
-
-
-    if(widget?.noteMode==NoteMode.Editing)
-    {
-      //SET Text TO TextField
-      _titelController.text=_noteList[widget.index]['titel'];
-      _textController.text=_noteList[widget.index]['text'];
+    if (widget.noteMode == NoteMode.Editing) {
+      _titleController.text = widget.note['title'];
+      _textController.text = widget.note['text'];
     }
-
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-/*
-      if(_noteMode==NoteMode.Adding)
-      {
-        return "Add Note";
-      }else
-        {
-          return "Edit Note"
-        }             equivalent Short Statement => _noteMode==NoteMode.Adding?"Add Note":"Edit Note"
-      */
       appBar: AppBar(
-        title:
-            Text(widget.noteMode == NoteMode.Adding ? "Add Note" : "Edit Note"),
+        title: Text(
+            widget.noteMode == NoteMode.Adding ? 'Add note' : 'Edit note'
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -59,57 +51,55 @@ class NoteState extends State<Note> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              controller: _titelController,
-              decoration: InputDecoration(hintText: 'Note Title'),
+              controller: _titleController,
+              decoration: InputDecoration(
+                  hintText: 'Note title'
+              ),
             ),
-            Container(
-              height: 8.0,
-            ),
+            Container(height: 8,),
             TextField(
               controller: _textController,
-              decoration: InputDecoration(hintText: "Note Text"),
+              decoration: InputDecoration(
+                  hintText: 'Note text'
+              ),
             ),
-            Container(
-              height: 18.0,
-            ),
+            Container(height: 16.0,),
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  _NoteButton("Save", Colors.blue, () {
-                    if (widget?.noteMode == NoteMode.Adding) {
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                _NoteButton('Save', Colors.blue, () {
+                  final title = _titleController.text;
+                  final text = _textController.text;
 
-                      final titel = _titelController.text;
-                      final text = _textController.text;
-                       // Add Data to List
-                      _noteList.add({'titel': titel, 'text': text});
-                    } else if (widget?.noteMode == NoteMode.Editing)
-                    {
-                      final titel = _titelController.text;
-                      final text = _textController.text;
-                      //Update index for Note
-                      _noteList[widget.index] = {'titel': titel, 'text': text};
-                    }
+                  if (widget?.noteMode == NoteMode.Adding) {
+                    NoteProvider.insertNote({
+                      'title': title,
+                      'text': text
+                    });
+                  } else if (widget?.noteMode == NoteMode.Editing) {
+                    NoteProvider.updateNote({
+                      'id': widget.note['id'],
+                      'title': _titleController.text,
+                      'text': _textController.text,
+                    });
+                  }
+                  Navigator.pop(context);
+                }),
+                Container(height: 16.0,),
+                _NoteButton('Discard', Colors.grey, () {
+                  Navigator.pop(context);
+                }),
+                widget.noteMode == NoteMode.Editing ?
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: _NoteButton('Delete', Colors.red, () async {
+                    await NoteProvider.deleteNote(widget.note['id']);
                     Navigator.pop(context);
                   }),
-                  Container(
-                    height: 16.0,
-                  ),
-                  _NoteButton("Discard", Colors.grey, () {
-                    Navigator.pop(context);
-                  }),
-                  Container(
-                    height: 16.0,
-                  ),
-                  widget.noteMode == NoteMode.Editing //Check Editing Or Not
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: _NoteButton("Delete", Colors.red, ()
-                          {
-                            _noteList.removeAt(widget.index);
-                            Navigator.pop(context);
-                          }))
-                      : Container(),
-                ])
+                )
+                    : Container()
+              ],
+            )
           ],
         ),
       ),
@@ -118,6 +108,7 @@ class NoteState extends State<Note> {
 }
 
 class _NoteButton extends StatelessWidget {
+
   final String _text;
   final Color _color;
   final Function _onPressed;
@@ -132,9 +123,10 @@ class _NoteButton extends StatelessWidget {
         _text,
         style: TextStyle(color: Colors.white),
       ),
-      color: _color,
+      height: 40,
       minWidth: 100,
-      height: 45,
+      color: _color,
     );
   }
 }
+

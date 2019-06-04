@@ -10,7 +10,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return NoteInheritedWidgets(
+    return NoteInheritedWidget(
       MaterialApp(
         title: 'Notes',
         home: NoteList(),

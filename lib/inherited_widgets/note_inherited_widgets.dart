@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
-class NoteInheritedWidgets extends InheritedWidget {
+class NoteInheritedWidget extends InheritedWidget {
 
-
-  final  notes = [
-    {'titel': 'dddddddddddddddddddddd',
-      'text': 'aaaaaaaaaaawwwwwww'
+  final notes = [
+    {
+      'title': 'asdmaskldmsklasdmaskldmsklasdmaskldmsklasdmaskldmskl',
+      'text': 'asdmaskldmsklasdmaskldmsklasdmaskldmsklasdmaskldmskl'
     },
-    {'titel': 'sssssssssss',
-      'text': 'saaaaaaaa'
+    {
+      'title': 'sadkaskdsadkaskdsadkaskdsadkaskd',
+      'text': 'sadkasksadkasksadkasksadkasksadkasksadkask'
     },
-    {'titel': 'dddddddddddd',
-      'text': 'ssssssssssssss'
-    },
-    {'titel': 'ffffffffff',
-      'text': 'ccxbbbbbbbbbb'
-    },
+    {
+      'title': 'asafas3253asafas3253asafas3253asafas3253',
+      'text': '3asafas3253asafas3253asafa3asafas3253asafas3253asafa3asafas3253asafas3253asafa'
+    }
   ];
 
-  NoteInheritedWidgets(Widget child) :super(child :child);
+  NoteInheritedWidget(Widget child) : super(child: child);
 
-  static NoteInheritedWidgets of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(NoteInheritedWidgets)
-        as NoteInheritedWidgets);
+  static NoteInheritedWidget of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(NoteInheritedWidget)as NoteInheritedWidget);
   }
 
   @override
-  bool updateShouldNotify(NoteInheritedWidgets oldWidget) {
-    return oldWidget.notes!=notes;
+  bool updateShouldNotify( NoteInheritedWidget oldWidget) {
+    return oldWidget.notes != notes;
   }
 }
